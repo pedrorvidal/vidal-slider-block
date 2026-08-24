@@ -1,55 +1,76 @@
 === Vidal Slider Block ===
-Contributors:      The WordPress Contributors
-Tags:              block
-Tested up to:      6.8
-Stable tag:        0.1.0
-License:           GPL-2.0-or-later
-License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Contributors:      pedrorvidal
+Tags:               block, slider, carousel, gallery, gutenberg
+Requires at least:  6.8
+Tested up to:       6.8
+Requires PHP:       7.4
+Stable tag:         0.1.0
+License:            GPL-2.0-or-later
+License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
-Example block scaffolded with Create Block tool.
+Bloco Gutenberg para criar um slider de imagens, com opção de largura total, autoplay configurável e navegação por bolinhas.
 
 == Description ==
 
-This is the long description. No limit, and you can use Markdown (as well as in the following sections).
+Vidal Slider Block adiciona um bloco nativo ao editor do WordPress (Gutenberg) para montar sliders de imagens sem precisar de shortcodes ou plugins pesados de terceiros.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+**⚠️ Este plugin ainda está em construção.** As funcionalidades abaixo já funcionam no editor, mas a navegação automática e por bolinhas no front-end ainda está sendo implementada.
+
+Funcionalidades:
+
+* Seleção de múltiplas imagens direto da Biblioteca de Mídia do WordPress.
+* Opção de layout: conteúdo (boxed) ou largura total (full width).
+* Autoplay configurável (ligar/desligar).
+* Intervalo entre slides ajustável (de 1 a 10 segundos).
+* Navegação por bolinhas (dots) quando há mais de uma imagem.
+* Bloco dinâmico: a marcação é gerada no servidor a cada carregamento da página.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+= Via upload manual =
 
-e.g.
+1. Faça o download do plugin (ou clone este repositório).
+2. Envie a pasta `vidal-slider-block` para o diretório `/wp-content/plugins/`.
+3. Ative o plugin em **Plugins** no painel do WordPress.
+4. No editor de blocos, adicione o bloco **Vidal Slider Block** (categoria "Widgets").
 
-1. Upload the plugin files to the `/wp-content/plugins/vidal-slider-block` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
+= A partir do código-fonte (desenvolvimento) =
 
+Se você clonou o repositório diretamente, é necessário compilar os assets antes de ativar o plugin:
+
+`
+npm install
+npm run build
+`
+
+Isso gera a pasta `build/`, que é a que o plugin de fato registra e carrega no WordPress.
+
+== Usage ==
+
+1. No editor, clique em **Adicionar bloco** e procure por "Vidal Slider Block".
+2. Clique em **Adicionar imagens** e selecione (ou envie) uma ou mais imagens na Biblioteca de Mídia.
+3. No painel lateral (**Configurações do Slider**), ajuste:
+   * **Full width** – faz o slider ocupar toda a largura da tela.
+   * **Autoplay** – liga/desliga o avanço automático dos slides.
+   * **Intervalo entre slides** – define, em segundos, o tempo entre uma troca e outra (quando o autoplay está ativo).
+4. Para trocar as imagens depois, use o botão **Editar imagens**; para remover uma imagem específica, passe o mouse sobre ela e clique em **Remover**.
+5. Publique ou atualize a página/post para ver o slider no front-end.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= O slider funciona sem JavaScript no front-end? =
 
-An answer to that question.
+A marcação (slides e bolinhas de navegação) é sempre renderizada no servidor. O comportamento interativo (autoplay e clique nas bolinhas) depende do script de front-end, que ainda está em desenvolvimento nesta versão.
 
-= What about foo bar? =
+= Posso usar vídeos ou outros tipos de mídia? =
 
-Answer to foo bar dilemma.
+Não. Por enquanto o bloco aceita apenas imagens.
 
-== Screenshots ==
+= Preciso rodar `npm run build` sempre que atualizar o plugin? =
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+Só se você estiver trabalhando a partir do código-fonte (pasta `src/`). Se você baixou uma versão já empacotada/zipada do plugin, a pasta `build/` já vem pronta.
 
 == Changelog ==
 
 = 0.1.0 =
-* Release
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above. This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation." Arbitrary sections will be shown below the built-in sections outlined above.
+* Versão inicial: seleção de imagens, configurações de layout/autoplay/intervalo e renderização dinâmica no front-end.
