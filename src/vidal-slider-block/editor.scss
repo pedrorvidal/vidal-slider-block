@@ -1,0 +1,38 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-create-block-vidal-slider-block {
+	border: 1px dotted #f00;
+}
+
+.vidal-slider-block__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	gap: 12px;
+}
+
+.vidal-slider-block__grid-item {
+	position: relative;
+	aspect-ratio: 1 / 1;
+	overflow: hidden;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.vidal-slider-block__remove-btn {
+		position: absolute;
+		bottom: 4px;
+		right: 4px;
+		background-color: white;
+		border: 1px solid #333;
+	}
+}

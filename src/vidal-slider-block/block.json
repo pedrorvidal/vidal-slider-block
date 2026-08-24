@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/vidal-slider-block",
+	"version": "0.1.0",
+	"title": "Vidal Slider Block",
+	"category": "widgets",
+	"icon": "smiley",
+	"description": "Example block scaffolded with Create Block tool for Custom Vidal Slider Block project.",
+	"example": {},
+	"attributes": {
+		"images": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object"
+			}
+		},
+		"layout": {
+			"type": "string",
+			"default": "boxed"
+		},
+		"interval": {
+			"type": "number",
+			"default": 3000
+		},
+		"autoplay": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "vidal-slider-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}
