@@ -114,6 +114,43 @@ vidal-slider-block/
 
 ---
 
+## 🧪 Testes
+
+O bloco tem testes automatizados em PHP (PHPUnit + `WP_UnitTestCase`), cobrindo a lógica de `render.php` — inclusive validações de segurança, como a resolução da URL da imagem sempre a partir do ID do anexo (nunca confiando em uma URL vinda junto com os atributos do bloco).
+
+> ⚠️ Os testes só rodam dentro do ambiente [ddev](https://ddev.com/) deste projeto, porque dependem de uma instalação real do WordPress e de um banco de dados de teste. Não funcionam com PHP/Composer do seu host.
+
+### 1. Instale as dependências de teste
+
+```bash
+ddev exec "cd /var/www/html/web/wp-content/plugins/vidal-slider-block && composer install"
+```
+
+### 2. Crie o banco de dados de teste (só na primeira vez por ambiente)
+
+Os testes usam um banco **separado** do banco do site (`db_test`), que é recriado do zero a cada execução:
+
+```bash
+ddev exec "mysql -h db -u root -proot -e \"CREATE DATABASE IF NOT EXISTS db_test; GRANT ALL PRIVILEGES ON db_test.* TO 'db'@'%'; FLUSH PRIVILEGES;\""
+```
+
+### 3. Rode os testes
+
+```bash
+ddev exec "cd /var/www/html/web/wp-content/plugins/vidal-slider-block && composer test"
+```
+
+Ou, se preferir uma sessão interativa dentro do container (evita repetir o `cd` a cada comando):
+
+```bash
+ddev ssh -d /var/www/html/web/wp-content/plugins/vidal-slider-block
+composer test
+```
+
+Os testes ficam em `tests/*Test.php`. Nomes de método sempre em inglês, mesmo com o restante do projeto em pt-BR.
+
+---
+
 ## 🚀 Como usar (wp-admin)
 
 1. No editor, clique em **Adicionar bloco** e procure por **"Vidal Slider Block"**.
