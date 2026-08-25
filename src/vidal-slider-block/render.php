@@ -21,6 +21,13 @@ if (empty($images)) {
 
 $wrapper_classes = 'vidal-slider vidal-slider--' . esc_attr($layout);
 
+// A tema (FSE) restringe a largura de qualquer bloco filho de um grupo
+// "is-layout-constrained" a menos que ele tenha a classe alignfull do core,
+// então precisamos dela para o breakout de largura total funcionar.
+if ('full' === $layout) {
+	$wrapper_classes .= ' alignfull';
+}
+
 $wrapper_attributes = get_block_wrapper_attributes(
 	[
 		'class'              => $wrapper_classes,

@@ -1,16 +1,3 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
-
-.wp-block-create-block-vidal-slider-block {
-	background-color: #bae9ff;
-	color: #fff;
-	padding: 2px;
-}
-
 .vidal-slider {
 	position: relative;
 	overflow: hidden;
@@ -20,14 +7,10 @@
 	max-width: 100%;
 }
 
-.vidal-slider--full {
-	width: 100vw;
-	position: relative;
-	left: 50%;
-	right: 50%;
-	margin-left: -50vw;
-	margin-right: -50vw;
-}
+// A classe alignfull (adicionada em render.php) já resolve o breakout de
+// largura total via margens negativas do tema. Não definimos "width" aqui:
+// deixar em auto é o que permite ao navegador compensar essas margens
+// negativas e expandir a caixa até a borda da viewport.
 
 .vidal-slider__track {
 	display: flex;
@@ -46,6 +29,10 @@
 		object-position: center center;
 		display: block;
 	}
+}
+
+.vidal-slider--full .vidal-slider__slide {
+	max-height: 400px;
 }
 
 .vidal-slider__dots {
