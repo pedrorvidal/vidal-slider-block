@@ -159,4 +159,203 @@ class RenderTest extends WP_UnitTestCase
 		);
 		$this->assertStringContainsString('data-interval="0"', $output_uma_imagem);
 	}
+
+	public function test_slide_with_relative_link_wraps_image_in_anchor()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-1.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				['id' => $attachment_id, 'link' => ['url' => '/contato']],
+			],
+		]);
+
+		$this->assertStringContainsString('href="/contato"', $output);
+	}
+
+	public function test_external_link_adds_rel_noopener_noreferrer()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-2.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				[
+					'id'   => $attachment_id,
+					'link' => ['url' => 'https://example.com/promo'],
+				],
+			],
+		]);
+
+		$this->assertStringContainsString('href="https://example.com/promo"', $output);
+		$this->assertStringContainsString('target="_blank"', $output);
+		$this->assertStringContainsString('rel="noopener noreferrer"', $output);
+	}
+
+	public function test_internal_relative_link_does_not_add_target_or_rel_attribute()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-3.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				['id' => $attachment_id, 'link' => ['url' => '/pagina']],
+			],
+		]);
+
+		$this->assertStringNotContainsString('target="_blank"', $output);
+		$this->assertStringNotContainsString('rel="noopener', $output);
+	}
+
+	public function test_invalid_link_scheme_renders_image_without_anchor()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-4.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				['id' => $attachment_id, 'link' => ['url' => 'javascript:alert(1)']],
+			],
+		]);
+
+		$this->assertStringNotContainsString('<a ', $output);
+	}
+
+	public function test_protocol_relative_link_is_rejected()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-5.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				['id' => $attachment_id, 'link' => ['url' => '//evil.com']],
+			],
+		]);
+
+		$this->assertStringNotContainsString('<a ', $output);
+		$this->assertStringNotContainsString('evil.com', $output);
+	}
+
+	public function test_bare_domain_without_scheme_is_rejected()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-6.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				['id' => $attachment_id, 'link' => ['url' => 'example.com']],
+			],
+		]);
+
+		$this->assertStringNotContainsString('<a ', $output);
+	}
+
+	public function test_missing_link_field_renders_image_without_anchor()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-7.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [['id' => $attachment_id]],
+		]);
+
+		$this->assertStringNotContainsString('<a ', $output);
+	}
+
+	public function test_link_with_empty_url_is_ignored()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-9.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				['id' => $attachment_id, 'link' => ['url' => '']],
+			],
+		]);
+
+		$this->assertStringNotContainsString('<a ', $output);
+	}
+
+	public function test_link_url_with_surrounding_whitespace_is_trimmed()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-10.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				['id' => $attachment_id, 'link' => ['url' => ' /contato ']],
+			],
+		]);
+
+		$this->assertStringContainsString('href="/contato"', $output);
+	}
+
+	public function test_absolute_link_to_external_domain_uses_blank_target()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-11.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [
+				[
+					'id'   => $attachment_id,
+					'link' => ['url' => 'https://external-site.example/page'],
+				],
+			],
+		]);
+
+		$this->assertStringContainsString('target="_blank"', $output);
+		$this->assertStringContainsString('rel="noopener noreferrer"', $output);
+	}
+
+	public function test_absolute_link_to_same_domain_does_not_use_blank_target()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-link-12.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$same_domain_url = home_url('/pagina-interna');
+
+		$output = $this->render_slider([
+			'images' => [
+				['id' => $attachment_id, 'link' => ['url' => $same_domain_url]],
+			],
+		]);
+
+		$this->assertStringContainsString('href="' . esc_url($same_domain_url) . '"', $output);
+		$this->assertStringNotContainsString('target="_blank"', $output);
+	}
 }

@@ -14,10 +14,12 @@ $layout   = in_array($attributes['layout'] ?? 'boxed', ['boxed', 'full'], true) 
 $autoplay = (bool) ($attributes['autoplay'] ?? true);
 $interval = absint($attributes['interval'] ?? 3000);
 
-// Os atributos do bloco vêm do post_content e não passam pela validação de
-// schema do block.json no servidor — nunca confiamos na URL "em cache" que o
-// editor salvou. Resolvemos a URL de verdade a partir do ID do anexo, então
-// só imagens que realmente existem na biblioteca de mídia são renderizadas.
+// Os atributos do bloco vêm do post_content. O WordPress valida o TIPO
+// deles contra o block.json (WP_Block_Type::prepare_attributes_for_render()),
+// mas não a semântica — uma string continua "válida" mesmo sendo uma URL
+// maliciosa ou um link mal formado — e se um único item de um array falhar
+// a validação, o atributo inteiro é descartado, não só o item. Por isso
+// revalidamos tudo aqui, item a item, em vez de confiar no que foi salvo.
 $slides = [];
 foreach ($images as $image) {
 	if (! is_array($image) || empty($image['id'])) {
@@ -30,10 +32,35 @@ foreach ($images as $image) {
 		continue;
 	}
 
-	$slides[] = [
-		'url' => $url,
-		'alt' => is_string($image['alt'] ?? null) ? $image['alt'] : '',
+	$slide = [
+		'url'         => $url,
+		'alt'         => is_string($image['alt'] ?? null) ? $image['alt'] : '',
+		'link_url'    => '',
+		'link_target' => '_self',
 	];
+
+	$link     = is_array($image['link'] ?? null) ? $image['link'] : [];
+	$link_url = is_string($link['url'] ?? null) ? trim($link['url']) : '';
+
+	// Link relativo (uma única "/") ou absoluto (http/https). Rejeita
+	// propositalmente URLs protocol-relative ("//evil.com"), que apontam
+	// pra outro domínio e são um vetor clássico de open-redirect.
+	if ('' !== $link_url && preg_match('#^(/(?!/)|https?://)#i', $link_url)) {
+		$slide['link_url'] = $link_url;
+
+		// O target não é uma escolha do usuário: link pra fora do domínio do
+		// site sempre abre em nova aba, ninguém deveria sair do site sem
+		// perceber. Link relativo nunca tem host (é sempre interno); link
+		// absoluto só é considerado externo se o host for diferente do
+		// domínio atual.
+		$link_host = wp_parse_url($link_url, PHP_URL_HOST);
+		$site_host = wp_parse_url(home_url(), PHP_URL_HOST);
+		$is_external = $link_host && 0 !== strcasecmp($link_host, (string) $site_host);
+
+		$slide['link_target'] = $is_external ? '_blank' : '_self';
+	}
+
+	$slides[] = $slide;
 }
 
 // Sem imagens, não faz sentido renderizar o slider.
@@ -64,9 +91,23 @@ $wrapper_attributes = get_block_wrapper_attributes(
 			<div
 				class="vidal-slider__slide"
 				data-slide-index="<?php echo esc_attr($index); ?>">
-				<img
-					src="<?php echo esc_url($image['url']); ?>"
-					alt="<?php echo esc_attr($image['alt'] ?? ''); ?>" />
+				<?php if ('' !== $image['link_url']) : ?>
+					<a
+						class="vidal-slider__slide-link"
+						href="<?php echo esc_url($image['link_url']); ?>"
+						<?php if ('_blank' === $image['link_target']) : ?>
+						target="_blank"
+						rel="noopener noreferrer"
+						<?php endif; ?>>
+						<img
+							src="<?php echo esc_url($image['url']); ?>"
+							alt="<?php echo esc_attr($image['alt'] ?? ''); ?>" />
+					</a>
+				<?php else : ?>
+					<img
+						src="<?php echo esc_url($image['url']); ?>"
+						alt="<?php echo esc_attr($image['alt'] ?? ''); ?>" />
+				<?php endif; ?>
 			</div>
 		<?php endforeach; ?>
 	</div>
