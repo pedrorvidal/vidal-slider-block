@@ -1,25 +1,66 @@
-/**
- * Use this file for JavaScript code that you want to run in the front-end
- * on posts/pages that contain this block.
- *
- * When this file is defined as the value of the `viewScript` property
- * in `block.json` it will be enqueued on the front end of the site.
- *
- * Example:
- *
- * ```js
- * {
- *   "viewScript": "file:./view.js"
- * }
- * ```
- *
- * If you're not making any changes to this file because your project doesn't need any
- * JavaScript running in the front-end, then you should delete this file and remove
- * the `viewScript` property from `block.json`.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
- */
+document.addEventListener("DOMContentLoaded", function () {
+	const sliders = document.querySelectorAll(".vidal-slider");
 
-/* eslint-disable no-console */
-console.log( 'Hello World! (from create-block-vidal-slider-block block)' );
-/* eslint-enable no-console */
+	sliders.forEach(initSlider);
+});
+
+function initSlider(sliderEl) {
+	const track = sliderEl.querySelector(".vidal-slider__track");
+	const slides = sliderEl.querySelectorAll(".vidal-slider__slide");
+	const dots = sliderEl.querySelectorAll(".vidal-slider__dot");
+
+	const totalSlides = slides.length;
+
+	if (totalSlides <= 1) {
+		return;
+	}
+
+	const autoplay = sliderEl.dataset.autoplay === "true";
+	const interval = parseInt(sliderEl.dataset.interval, 10) || 3000;
+
+	let currentIndex = 0;
+	let autoplayTimer = null;
+
+	function goToSlide(index) {
+		currentIndex = index;
+
+		track.style.transform = "translateX(-" + index * 100 + "%)";
+
+		dots.forEach(function (dot, dotIndex) {
+			dot.classList.toggle("is-active", dotIndex === index);
+		});
+	}
+
+	function goToNextSlide() {
+		const nextIndex = (currentIndex + 1) % totalSlides;
+		goToSlide(nextIndex);
+	}
+
+	function startAutoplay() {
+		if (!autoplay) {
+			return;
+		}
+		stopAutoplay();
+		autoplayTimer = setInterval(goToNextSlide, interval);
+	}
+
+	function stopAutoplay() {
+		if (autoplayTimer) {
+			clearInterval(autoplayTimer);
+			autoplayTimer = null;
+		}
+	}
+
+	dots.forEach(function (dot) {
+		dot.addEventListener("click", function () {
+			const index = parseInt(dot.dataset.slideIndex, 10);
+			goToSlide(index);
+			startAutoplay();
+		});
+	});
+
+	sliderEl.addEventListener("mouseenter", stopAutoplay);
+	sliderEl.addEventListener("mouseleave", startAutoplay);
+
+	startAutoplay();
+}

@@ -6,7 +6,73 @@
  */
 
 .wp-block-create-block-vidal-slider-block {
-	background-color: #21759b;
+	background-color: #bae9ff;
 	color: #fff;
 	padding: 2px;
+}
+
+.vidal-slider {
+	position: relative;
+	overflow: hidden;
+}
+
+.vidal-slider--boxed {
+	max-width: 100%;
+}
+
+.vidal-slider--full {
+	width: 100vw;
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+}
+
+.vidal-slider__track {
+	display: flex;
+	transition: transform 0.5s ease-in-out;
+}
+
+.vidal-slider__slide {
+	flex: 0 0 100%;
+	max-width: 100%;
+	height: 400px;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center center;
+		display: block;
+	}
+}
+
+.vidal-slider__dots {
+	position: absolute;
+	bottom: 16px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 8px;
+	z-index: 1;
+}
+
+.vidal-slider__dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	border: none;
+	background-color: rgba(255, 255, 255, 0.5);
+	cursor: pointer;
+	padding: 0;
+	transition: background-color 0.3s ease;
+
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.8);
+	}
+
+	&.is-active {
+		background-color: #fff;
+	}
 }

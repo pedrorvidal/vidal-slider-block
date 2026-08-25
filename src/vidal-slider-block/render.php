@@ -52,7 +52,8 @@ $wrapper_attributes = get_block_wrapper_attributes(
 									/* translators: %d: slide number */
 									__('Ir para o slide %d', 'vidal-slider-block'),
 									$index + 1
-								)); ?>"></button>
+								)); ?>">
+				</button>
 			<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
