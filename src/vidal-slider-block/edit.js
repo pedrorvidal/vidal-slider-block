@@ -27,7 +27,8 @@ import {
 import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, clientId } ) {
-	const { images, layout, interval, autoplay } = attributes;
+	const { images, layout, interval, autoplay, showDots, showArrows } =
+		attributes;
 	const blockProps = useBlockProps();
 
 	function onSelectImages( newImages ) {
@@ -125,6 +126,26 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						min={ 1 }
 						max={ 10 }
 						step={ 0.5 }
+					/>
+					<ToggleControl
+						label={ __(
+							'Mostrar bolinhas de navegação',
+							'vidal-slider-block'
+						) }
+						checked={ showDots }
+						onChange={ ( value ) =>
+							setAttributes( { showDots: value } )
+						}
+					/>
+					<ToggleControl
+						label={ __(
+							'Mostrar setas de navegação',
+							'vidal-slider-block'
+						) }
+						checked={ showArrows }
+						onChange={ ( value ) =>
+							setAttributes( { showArrows: value } )
+						}
 					/>
 				</PanelBody>
 			</InspectorControls>

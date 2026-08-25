@@ -9,10 +9,12 @@
  * $block      (WP_Block) - instância do bloco
  */
 
-$images   = is_array($attributes['images'] ?? null) ? $attributes['images'] : [];
-$layout   = in_array($attributes['layout'] ?? 'boxed', ['boxed', 'full'], true) ? $attributes['layout'] : 'boxed';
-$autoplay = (bool) ($attributes['autoplay'] ?? true);
-$interval = absint($attributes['interval'] ?? 3000);
+$images      = is_array($attributes['images'] ?? null) ? $attributes['images'] : [];
+$layout      = in_array($attributes['layout'] ?? 'boxed', ['boxed', 'full'], true) ? $attributes['layout'] : 'boxed';
+$autoplay    = (bool) ($attributes['autoplay'] ?? true);
+$interval    = absint($attributes['interval'] ?? 3000);
+$show_dots   = (bool) ($attributes['showDots'] ?? true);
+$show_arrows = (bool) ($attributes['showArrows'] ?? true);
 
 // Os atributos do bloco vêm do post_content. O WordPress valida o TIPO
 // deles contra o block.json (WP_Block_Type::prepare_attributes_for_render()),
@@ -112,7 +114,24 @@ $wrapper_attributes = get_block_wrapper_attributes(
 		<?php endforeach; ?>
 	</div>
 
-	<?php if (count($slides) > 1) : ?>
+	<?php if ($show_arrows && count($slides) > 1) : ?>
+		<button
+			class="vidal-slider__arrow vidal-slider__arrow--prev"
+			aria-label="<?php echo esc_attr__('Slide anterior', 'vidal-slider-block'); ?>">
+			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<polyline points="15 18 9 12 15 6"></polyline>
+			</svg>
+		</button>
+		<button
+			class="vidal-slider__arrow vidal-slider__arrow--next"
+			aria-label="<?php echo esc_attr__('Próximo slide', 'vidal-slider-block'); ?>">
+			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<polyline points="9 18 15 12 9 6"></polyline>
+			</svg>
+		</button>
+	<?php endif; ?>
+
+	<?php if ($show_dots && count($slides) > 1) : ?>
 		<div class="vidal-slider__dots">
 			<?php foreach ($slides as $index => $image) : ?>
 				<button

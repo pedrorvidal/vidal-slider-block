@@ -13,10 +13,12 @@ Bloco nativo do Gutenberg para criar **sliders de imagens** no WordPress, sem sh
 ## ✨ Funcionalidades
 
 - 🖼️ Seleção de múltiplas imagens direto da Biblioteca de Mídia do WordPress
+- 🔗 Link opcional por slide (relativo ou absoluto), com abertura em nova aba automática para links externos
 - 📐 Layout em largura do conteúdo (*boxed*) ou tela cheia (*full width*)
 - ▶️ Autoplay configurável (ligar/desligar), com pausa automática ao passar o mouse sobre o slider
 - ⏱️ Intervalo entre slides ajustável (1 a 10 segundos)
-- 🔘 Navegação por bolinhas (*dots*) clicáveis quando há mais de uma imagem
+- 🔘 Navegação por bolinhas (*dots*), opcional
+- ◀️▶️ Setas de navegação (anterior/próximo), opcionais — SVG inline, sem depender de nenhuma biblioteca externa
 - ⚡ Bloco **dinâmico** — a marcação é gerada no servidor a cada carregamento da página
 
 ---
@@ -175,16 +177,19 @@ Os testes ficam em `tests/*Test.php`. Nomes de método sempre em inglês, mesmo 
 
 1. No editor, clique em **Adicionar bloco** e procure por **"Vidal Slider Block"**.
 2. Clique em **Adicionar imagens** e selecione (ou envie) uma ou mais imagens na Biblioteca de Mídia.
-3. No painel lateral, em **Configurações do Slider**, ajuste:
+3. (Opcional) Em cada imagem, preencha o campo **Link** com uma URL relativa (`/pagina`) ou absoluta (`https://...`) — qualquer outro formato mostra erro e trava o botão de salvar até ser corrigido. Links para domínios diferentes do site (incluindo subdomínios) abrem automaticamente em nova aba.
+4. No painel lateral, em **Configurações do Slider**, ajuste:
 
    | Opção | O que faz |
    |---|---|
    | 🖥️ **Full width** | Faz o slider ocupar toda a largura da tela |
    | ▶️ **Autoplay** | Liga/desliga o avanço automático dos slides |
    | ⏱️ **Intervalo entre slides** | Define, em segundos, o tempo entre uma troca e outra (com autoplay ativo) |
+   | 🔘 **Mostrar bolinhas de navegação** | Liga/desliga os *dots* abaixo do slider |
+   | ◀️▶️ **Mostrar setas de navegação** | Liga/desliga as setas de anterior/próximo sobre o slider |
 
-4. Para trocar as imagens depois, use **Editar imagens**; para remover uma imagem específica, passe o mouse sobre ela e clique em **Remover**.
-5. Publique ou atualize a página/post para ver o slider no front-end.
+5. Para trocar as imagens depois, use **Editar imagens**; para remover uma imagem específica, passe o mouse sobre ela e clique em **Remover**.
+6. Publique ou atualize a página/post para ver o slider no front-end.
 
 ---
 
@@ -207,6 +212,8 @@ Só se você estiver trabalhando a partir do código-fonte (pasta `src/`). Se vo
 - 🎉 Versão inicial: seleção de imagens, configurações de layout/autoplay/intervalo e renderização dinâmica no front-end.
 - ▶️ Implementado o comportamento do slider no front-end (`view.js`): troca de slides, autoplay com pausa no hover e navegação por bolinhas.
 - 🎨 Adicionados os estilos (`style.scss`) para trilha, slides e bolinhas de navegação (`.vidal-slider__*`).
+- 🔗 Adicionado link opcional por slide, com validação (relativo `/algo` ou absoluto `http(s)://`) no editor e revalidado no servidor. O `target` não é escolhido pelo usuário: é sempre derivado comparando o domínio do link com o do site — link externo (incluindo subdomínio) abre em nova aba automaticamente, com `rel="noopener noreferrer"`.
+- 🔘◀️▶️ Bolinhas de navegação agora são opcionais (`showDots`), e adicionadas setas de navegação (`showArrows`), também opcionais — SVG inline com efeito de vidro fosco (`backdrop-filter` + `filter: drop-shadow`), sem depender de nenhuma biblioteca externa.
 - ✅ Adicionados testes Jest (`npm run test:unit`) para a lógica de imagens/links do editor, extraída para `slider-images.js` justamente para ser testável sem precisar renderizar o bloco inteiro.
 - 🐛 Corrigido o layout *full width*: o breakout manual (`100vw`/margens negativas) quebrava em temas de bloco (FSE), que forçam margens automáticas em qualquer filho sem a classe `alignfull` do core. Agora `render.php` adiciona `alignfull` quando `layout` é `"full"`, deixando o próprio tema resolver o breakout corretamente.
 

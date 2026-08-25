@@ -121,6 +121,85 @@ class RenderTest extends WP_UnitTestCase
 		$this->assertStringContainsString('vidal-slider__dots', $output_duas_imagens);
 	}
 
+	public function test_dots_are_hidden_when_show_dots_is_false()
+	{
+		$id_1 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-dots-1.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+		$id_2 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-dots-2.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images'   => [['id' => $id_1], ['id' => $id_2]],
+			'showDots' => false,
+		]);
+
+		$this->assertStringNotContainsString('vidal-slider__dots', $output);
+	}
+
+	public function test_arrows_appear_with_multiple_images_by_default()
+	{
+		$id_1 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-arrows-1.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+		$id_2 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-arrows-2.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [['id' => $id_1], ['id' => $id_2]],
+		]);
+
+		$this->assertStringContainsString('vidal-slider__arrow--prev', $output);
+		$this->assertStringContainsString('vidal-slider__arrow--next', $output);
+	}
+
+	public function test_arrows_are_hidden_when_show_arrows_is_false()
+	{
+		$id_1 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-arrows-3.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+		$id_2 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-arrows-4.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images'     => [['id' => $id_1], ['id' => $id_2]],
+			'showArrows' => false,
+		]);
+
+		$this->assertStringNotContainsString('vidal-slider__arrow', $output);
+	}
+
+	public function test_arrows_do_not_appear_with_a_single_image_even_when_enabled()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-arrows-5.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images'     => [['id' => $attachment_id]],
+			'showArrows' => true,
+		]);
+
+		$this->assertStringNotContainsString('vidal-slider__arrow', $output);
+	}
+
 	public function test_negative_interval_is_sanitized_to_absolute_value()
 	{
 		$anexo_1 = self::factory()->attachment->create_object([

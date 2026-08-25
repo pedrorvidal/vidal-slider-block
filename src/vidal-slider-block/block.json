@@ -27,6 +27,14 @@
 		"autoplay": {
 			"type": "boolean",
 			"default": true
+		},
+		"showDots": {
+			"type": "boolean",
+			"default": true
+		},
+		"showArrows": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"supports": {
