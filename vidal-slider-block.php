@@ -13,6 +13,10 @@
  *
  * @package CreateBlock
  */
+/**TODO
+ * - adicionar link a cada item do slider, com a possibilidade de escolher se o link é pra target="_self" ou target="_blank"
+ * - verificar versão mobile
+ */
 
 if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.

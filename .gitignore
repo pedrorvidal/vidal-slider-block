@@ -1,5 +1,9 @@
 # Dependency directories
 node_modules/
+vendor/
+
+# Cache do PHPUnit
+.phpunit.result.cache
 
 # Build output (run `npm run build` to generate)
 build/
