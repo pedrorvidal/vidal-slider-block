@@ -150,6 +150,7 @@ Só se você estiver trabalhando a partir do código-fonte (pasta `src/`). Se vo
 - 🎉 Versão inicial: seleção de imagens, configurações de layout/autoplay/intervalo e renderização dinâmica no front-end.
 - ▶️ Implementado o comportamento do slider no front-end (`view.js`): troca de slides, autoplay com pausa no hover e navegação por bolinhas.
 - 🎨 Adicionados os estilos (`style.scss`) para trilha, slides e bolinhas de navegação (`.vidal-slider__*`).
+- 🐛 Corrigido o layout *full width*: o breakout manual (`100vw`/margens negativas) quebrava em temas de bloco (FSE), que forçam margens automáticas em qualquer filho sem a classe `alignfull` do core. Agora `render.php` adiciona `alignfull` quando `layout` é `"full"`, deixando o próprio tema resolver o breakout corretamente.
 
 ---
 
