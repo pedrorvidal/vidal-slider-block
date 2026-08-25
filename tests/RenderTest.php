@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Testes do render.php do bloco.
  *
@@ -20,14 +21,14 @@ class RenderTest extends WP_UnitTestCase
 		return trim(do_blocks($content));
 	}
 
-	public function test_nao_renderiza_nada_sem_imagens()
+	public function test_renders_nothing_without_images()
 	{
 		$output = $this->render_slider(['images' => []]);
 
 		$this->assertSame('', $output);
 	}
 
-	public function test_ignora_id_de_anexo_que_nao_existe()
+	public function test_ignores_attachment_id_that_does_not_exist()
 	{
 		$output = $this->render_slider([
 			'images' => [
@@ -38,7 +39,7 @@ class RenderTest extends WP_UnitTestCase
 		$this->assertSame('', $output);
 	}
 
-	public function test_usa_a_url_real_do_anexo_e_ignora_a_url_enviada_pelo_cliente()
+	public function test_uses_real_attachment_url_and_ignores_client_supplied_url()
 	{
 		$attachment_id = self::factory()->attachment->create_object([
 			'file'           => 'imagem-teste.jpg',
@@ -63,7 +64,7 @@ class RenderTest extends WP_UnitTestCase
 		$this->assertStringContainsString('Foto de teste', $output);
 	}
 
-	public function test_layout_invalido_cai_para_boxed()
+	public function test_invalid_layout_falls_back_to_boxed()
 	{
 		$attachment_id = self::factory()->attachment->create_object([
 			'file'           => 'imagem-teste-2.jpg',
@@ -80,7 +81,7 @@ class RenderTest extends WP_UnitTestCase
 		$this->assertStringNotContainsString('alignfull', $output);
 	}
 
-	public function test_layout_full_adiciona_classe_alignfull()
+	public function test_full_layout_adds_alignfull_class()
 	{
 		$attachment_id = self::factory()->attachment->create_object([
 			'file'           => 'imagem-teste-3.jpg',
@@ -97,7 +98,7 @@ class RenderTest extends WP_UnitTestCase
 		$this->assertStringContainsString('alignfull', $output);
 	}
 
-	public function test_bolinhas_de_navegacao_so_aparecem_com_mais_de_uma_imagem()
+	public function test_dots_only_appear_with_more_than_one_image()
 	{
 		$id_1 = self::factory()->attachment->create_object([
 			'file'           => 'imagem-teste-4.jpg',
@@ -118,5 +119,44 @@ class RenderTest extends WP_UnitTestCase
 			'images' => [['id' => $id_1], ['id' => $id_2]],
 		]);
 		$this->assertStringContainsString('vidal-slider__dots', $output_duas_imagens);
+	}
+
+	public function test_negative_interval_is_sanitized_to_absolute_value()
+	{
+		$anexo_1 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-teste-1.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+
+		$output_uma_imagem = $this->render_slider(
+			[
+				'images' => [
+					['id' => $anexo_1]
+				],
+				'interval' => -50
+			]
+		);
+		$this->assertStringContainsString('data-interval="50"', $output_uma_imagem);
+	}
+
+	public function test_zero_interval_is_not_replaced_by_default()
+	{
+		$anexo_1 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-teste-6.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output_uma_imagem = $this->render_slider(
+			[
+				'images' => [
+					['id' => $anexo_1]
+				],
+				'interval' => 0
+			]
+		);
+		$this->assertStringContainsString('data-interval="0"', $output_uma_imagem);
 	}
 }
