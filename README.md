@@ -3,10 +3,10 @@
 Bloco nativo do Gutenberg para criar **sliders de imagens** no WordPress, sem shortcodes e sem plugins pesados de terceiros.
 
 ![Versão](https://img.shields.io/badge/vers%C3%A3o-0.1.0-blue)
-![Status](https://img.shields.io/badge/status-em%20constru%C3%A7%C3%A3o-orange)
+![Status](https://img.shields.io/badge/status-funcional-brightgreen)
 ![Licença](https://img.shields.io/badge/licen%C3%A7a-GPL--2.0--or--later-green)
 
-> 🚧 **Em construção!** As opções de edição já funcionam no editor, mas o autoplay e a navegação por bolinhas no front-end ainda estão sendo implementados. Este README vai evoluir junto com o plugin.
+> ✅ Autoplay e navegação por bolinhas já funcionam no front-end. Este README vai evoluir junto com o plugin.
 
 ---
 
@@ -14,9 +14,9 @@ Bloco nativo do Gutenberg para criar **sliders de imagens** no WordPress, sem sh
 
 - 🖼️ Seleção de múltiplas imagens direto da Biblioteca de Mídia do WordPress
 - 📐 Layout em largura do conteúdo (*boxed*) ou tela cheia (*full width*)
-- ▶️ Autoplay configurável (ligar/desligar)
+- ▶️ Autoplay configurável (ligar/desligar), com pausa automática ao passar o mouse sobre o slider
 - ⏱️ Intervalo entre slides ajustável (1 a 10 segundos)
-- 🔘 Navegação por bolinhas (*dots*) quando há mais de uma imagem
+- 🔘 Navegação por bolinhas (*dots*) clicáveis quando há mais de uma imagem
 - ⚡ Bloco **dinâmico** — a marcação é gerada no servidor a cada carregamento da página
 
 ---
@@ -134,7 +134,7 @@ vidal-slider-block/
 ## ❓ Perguntas frequentes
 
 **O slider funciona sem JavaScript no front-end?**
-A marcação (slides e bolinhas de navegação) é sempre renderizada no servidor. O comportamento interativo (autoplay e clique nas bolinhas) depende do script de front-end, que ainda está em desenvolvimento nesta versão.
+A marcação (slides e bolinhas de navegação) é sempre renderizada no servidor, mas o comportamento interativo (autoplay, troca de slide e clique nas bolinhas) depende do script de front-end (`view.js`). Sem JavaScript, apenas o primeiro slide fica visível.
 
 **Posso usar vídeos ou outros tipos de mídia?**
 Não, por enquanto o bloco aceita apenas imagens.
@@ -148,6 +148,8 @@ Só se você estiver trabalhando a partir do código-fonte (pasta `src/`). Se vo
 
 ### 0.1.0
 - 🎉 Versão inicial: seleção de imagens, configurações de layout/autoplay/intervalo e renderização dinâmica no front-end.
+- ▶️ Implementado o comportamento do slider no front-end (`view.js`): troca de slides, autoplay com pausa no hover e navegação por bolinhas.
+- 🎨 Adicionados os estilos (`style.scss`) para trilha, slides e bolinhas de navegação (`.vidal-slider__*`).
 
 ---
 
