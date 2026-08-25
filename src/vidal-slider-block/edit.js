@@ -18,39 +18,22 @@ import {
 } from '@wordpress/components';
 import { image as imageIcon } from '@wordpress/icons';
 
+import {
+	isValidLinkUrl,
+	mergeSelectedImages,
+	hasAnyInvalidLink,
+} from './slider-images';
+
 import './editor.scss';
-
-// Link relativo (uma única "/", não "//..." — isso é protocol-relative,
-// um vetor de open-redirect) ou absoluto (http/https). A mesma regra é
-// reaplicada em render.php, que é quem de fato decide o que é renderizado —
-// esta validação aqui é só para a experiência de edição.
-const LINK_URL_PATTERN = /^(\/(?!\/)|https?:\/\/)/i;
-
-function isValidLinkUrl( url ) {
-	return LINK_URL_PATTERN.test( url );
-}
 
 export default function Edit( { attributes, setAttributes, clientId } ) {
 	const { images, layout, interval, autoplay } = attributes;
 	const blockProps = useBlockProps();
 
 	function onSelectImages( newImages ) {
-		// Preserva o link já configurado em cada imagem ao reabrir a seleção
-		// da biblioteca de mídia — sem isso, editar a seleção apagaria todos
-		// os links salvos.
-		const previousById = new Map(
-			images.map( ( image ) => [ image.id, image ] )
-		);
-		const formattedImages = newImages.map( ( image ) => {
-			const previous = previousById.get( image.id );
-			return {
-				id: image.id,
-				url: image.url,
-				alt: image.alt || '',
-				link: previous?.link,
-			};
+		setAttributes( {
+			images: mergeSelectedImages( images, newImages ),
 		} );
-		setAttributes( { images: formattedImages } );
 	}
 
 	function removeImage( idToRemove ) {
@@ -65,10 +48,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		setAttributes( { images: newImages } );
 	}
 
-	const hasInvalidLink = images.some( ( image ) => {
-		const url = ( image.link?.url ?? '' ).trim();
-		return url !== '' && ! isValidLinkUrl( url );
-	} );
+	const hasInvalidLink = hasAnyInvalidLink( images );
 
 	const { lockPostSaving, unlockPostSaving } = useDispatch( editorStore );
 	const lockName = `vidal-slider-block-invalid-link-${ clientId }`;

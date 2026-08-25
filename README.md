@@ -92,6 +92,7 @@ Com a `build/` gerada, vá em **Plugins** no wp-admin e ative o **Vidal Slider B
 | `npm run format` | Formata o código automaticamente (`wp-scripts format`) |
 | `npm run lint:js` | Lint do JavaScript |
 | `npm run lint:css` | Lint do SCSS/CSS |
+| `npm run test:unit` | Testes JS (Jest) — ver seção [🧪 Testes](#-testes) |
 | `npm run plugin-zip` | Empacota o plugin em um `.zip` pronto pra distribuir |
 
 ### 🗂️ Estrutura do projeto
@@ -104,11 +105,14 @@ vidal-slider-block/
 │       ├── block.json          # nome, atributos e wiring dos assets do bloco
 │       ├── index.js            # registra o bloco no editor
 │       ├── edit.js             # UI do bloco no editor (seleção de imagens, configurações)
+│       ├── slider-images.js    # lógica pura de imagens/links (sem UI), testada com Jest
 │       ├── save.js             # sempre retorna null — bloco é dinâmico
 │       ├── render.php          # markup do front-end, gerado no servidor
 │       ├── view.js             # script de front-end (autoplay, navegação)
 │       ├── style.scss          # estilos usados no editor e no front-end
-│       └── editor.scss         # estilos usados só no editor
+│       ├── editor.scss         # estilos usados só no editor
+│       └── test/               # testes Jest (ex.: slider-images.js)
+├── tests/                      # testes PHPUnit (render.php)
 └── build/                      # gerado por npm run start/build — não editar à mão
 ```
 
@@ -116,17 +120,33 @@ vidal-slider-block/
 
 ## 🧪 Testes
 
-O bloco tem testes automatizados em PHP (PHPUnit + `WP_UnitTestCase`), cobrindo a lógica de `render.php` — inclusive validações de segurança, como a resolução da URL da imagem sempre a partir do ID do anexo (nunca confiando em uma URL vinda junto com os atributos do bloco).
+O bloco tem dois tipos de teste automatizado, um pra cada lado do código: **PHPUnit** pra tudo que roda no servidor (`render.php`) e **Jest** pra lógica pura do JavaScript do editor (`slider-images.js`).
 
-> ⚠️ Os testes só rodam dentro do ambiente [ddev](https://ddev.com/) deste projeto, porque dependem de uma instalação real do WordPress e de um banco de dados de teste. Não funcionam com PHP/Composer do seu host.
+### JavaScript (Jest)
 
-### 1. Instale as dependências de teste
+`slider-images.js` concentra a lógica de estado do editor que não depende de UI — validação de link, merge de imagens preservando o link ao reabrir a seleção de mídia, checagem de link inválido. Ela foi separada do `edit.js` justamente pra poder ser testada sem precisar renderizar o bloco inteiro (o que exigiria simular o media picker do WordPress).
+
+Roda direto no seu host, sem precisar do ddev — é só JavaScript puro:
+
+```bash
+npm run test:unit
+```
+
+Os testes ficam em `src/vidal-slider-block/test/*.js`.
+
+### PHP (PHPUnit)
+
+Cobre a lógica de `render.php` — inclusive validações de segurança, como a resolução da URL da imagem sempre a partir do ID do anexo (nunca confiando em uma URL vinda junto com os atributos do bloco).
+
+> ⚠️ Ao contrário do Jest, os testes PHP só rodam dentro do ambiente [ddev](https://ddev.com/) deste projeto, porque dependem de uma instalação real do WordPress e de um banco de dados de teste. Não funcionam com PHP/Composer do seu host.
+
+#### 1. Instale as dependências de teste
 
 ```bash
 ddev exec "cd /var/www/html/web/wp-content/plugins/vidal-slider-block && composer install"
 ```
 
-### 2. Crie o banco de dados de teste (só na primeira vez por ambiente)
+#### 2. Crie o banco de dados de teste (só na primeira vez por ambiente)
 
 Os testes usam um banco **separado** do banco do site (`db_test`), que é recriado do zero a cada execução:
 
@@ -134,7 +154,7 @@ Os testes usam um banco **separado** do banco do site (`db_test`), que é recria
 ddev exec "mysql -h db -u root -proot -e \"CREATE DATABASE IF NOT EXISTS db_test; GRANT ALL PRIVILEGES ON db_test.* TO 'db'@'%'; FLUSH PRIVILEGES;\""
 ```
 
-### 3. Rode os testes
+#### 3. Rode os testes
 
 ```bash
 ddev exec "cd /var/www/html/web/wp-content/plugins/vidal-slider-block && composer test"
@@ -187,6 +207,7 @@ Só se você estiver trabalhando a partir do código-fonte (pasta `src/`). Se vo
 - 🎉 Versão inicial: seleção de imagens, configurações de layout/autoplay/intervalo e renderização dinâmica no front-end.
 - ▶️ Implementado o comportamento do slider no front-end (`view.js`): troca de slides, autoplay com pausa no hover e navegação por bolinhas.
 - 🎨 Adicionados os estilos (`style.scss`) para trilha, slides e bolinhas de navegação (`.vidal-slider__*`).
+- ✅ Adicionados testes Jest (`npm run test:unit`) para a lógica de imagens/links do editor, extraída para `slider-images.js` justamente para ser testável sem precisar renderizar o bloco inteiro.
 - 🐛 Corrigido o layout *full width*: o breakout manual (`100vw`/margens negativas) quebrava em temas de bloco (FSE), que forçam margens automáticas em qualquer filho sem a classe `alignfull` do core. Agora `render.php` adiciona `alignfull` quando `layout` é `"full"`, deixando o próprio tema resolver o breakout corretamente.
 
 ---
