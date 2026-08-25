@@ -13,10 +13,9 @@
  *
  * @package CreateBlock
  */
-/**TODO
- * - adicionar link a cada item do slider, com a possibilidade de escolher se o link é pra target="_self" ou target="_blank"
- * - verificar versão mobile
- */
+/**TODO: adicionar link a cada item do slider, com a possibilidade de escolher se o link é pra target="_self" ou target="_blank" */
+/**TODO: verificar versão mobile */
+/**TODO: Se tiver apenas 1 slide, desliga a animação e o loop (verificar)  */
 
 if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
