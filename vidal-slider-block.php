@@ -17,6 +17,24 @@
 if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
+
+/**
+ * Carrega as traduções (.mo/.json) do plugin a partir de /languages.
+ *
+ * Diferente de plugins hospedados no WordPress.org (que têm as traduções
+ * carregadas automaticamente desde o WP 4.6), um plugin distribuído fora
+ * do .org precisa chamar load_plugin_textdomain() explicitamente — sem
+ * isso, os textos em português ficam fixos mesmo que existam arquivos de
+ * tradução. Ganchado em "init" (mesmo hook do registro do bloco, logo
+ * abaixo) para não disparar o aviso "textdomain carregado cedo demais"
+ * que o WordPress emite quando uma string é traduzida antes desse hook.
+ */
+function vidal_slider_block_load_textdomain()
+{
+	load_plugin_textdomain('vidal-slider-block', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+add_action('init', 'vidal_slider_block_load_textdomain');
+
 /**
  * Registers the block(s) metadata from the `blocks-manifest.php` and registers the block type(s)
  * based on the registered block metadata. Behind the scenes, it registers also all assets so they can be enqueued
