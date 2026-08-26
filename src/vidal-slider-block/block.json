@@ -35,6 +35,22 @@
 		"showArrows": {
 			"type": "boolean",
 			"default": true
+		},
+		"heightDesktop": {
+			"type": "number",
+			"default": 500
+		},
+		"heightUnitDesktop": {
+			"type": "string",
+			"default": "px"
+		},
+		"heightMobile": {
+			"type": "number",
+			"default": 250
+		},
+		"heightUnitMobile": {
+			"type": "string",
+			"default": "px"
 		}
 	},
 	"supports": {

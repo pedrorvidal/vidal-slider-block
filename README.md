@@ -19,6 +19,7 @@ Native Gutenberg block for creating **image sliders** in WordPress, with no shor
 - ⏱️ Adjustable interval between slides (1 to 10 seconds)
 - 🔘 Dot navigation, optional
 - ◀️▶️ Navigation arrows (previous/next), optional — inline SVG, with no external library dependency
+- 📏 Configurable minimum height, set independently for desktop (default 500px) and mobile (default 250px), in px, vh or em
 - 📱 Responsive: on mobile (≤600px), the slider always takes up the full screen (even with *boxed* layout) and images get a reduced height (250px)
 - ⚡ **Dynamic** block — markup is generated server-side on every page load
 
@@ -188,6 +189,8 @@ The tests live in `tests/*Test.php`. Method names are always in English, even th
    | ⏱️ **Interval between slides** | Sets, in seconds, the time between one transition and the next (with autoplay enabled) |
    | 🔘 **Show navigation dots** | Turns the *dots* below the slider on/off |
    | ◀️▶️ **Show navigation arrows** | Turns the previous/next arrows over the slider on/off |
+   | 📏 **Slider Height** | Minimum height of the slider on desktop — a number plus a unit (px, vh or em). Default: 500px |
+   | 📏 **Slider Height (Mobile)** | Same as above, but applied only below the 600px breakpoint. Default: 250px |
 
 5. To change the images later, use **Edit images**; to remove a specific image, hover over it and click **Remove**.
 6. Publish or update the page/post to see the slider on the front end.
@@ -218,6 +221,7 @@ Only if you're working from the source code (`src/` folder). If you downloaded a
 - 📱 Added a mobile breakpoint (`≤600px`): image height reduced to 250px, and the *boxed* layout now behaves like full width (full-screen bleed), since 400px and content width make less sense on a small screen.
 - ✅ Added Jest tests (`npm run test:unit`) for the editor's image/link logic, extracted into `slider-images.js` specifically so it could be tested without needing to render the whole block.
 - 🐛 Fixed the *full width* layout: the manual breakout (`100vw`/negative margins) broke in block themes (FSE), which force automatic margins on any child without the core's `alignfull` class. Now `render.php` adds `alignfull` when `layout` is `"full"`, letting the theme itself resolve the breakout correctly.
+- 📏 Added configurable slider height, set independently for desktop (`heightDesktop`/`heightUnitDesktop`, default `500px`) and mobile (`heightMobile`/`heightUnitMobile`, default `250px`), each with a unit of px, vh or em. The values are passed to the front end as CSS custom properties (`--vidal-slider-height`, `--vidal-slider-height-mobile`) on the block wrapper, consumed by `style.scss`.
 
 ---
 

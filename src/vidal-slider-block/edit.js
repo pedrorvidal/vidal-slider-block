@@ -13,6 +13,7 @@ import {
 	ToggleControl,
 	RangeControl,
 	TextControl,
+	RadioControl,
 	Button,
 	Placeholder,
 } from '@wordpress/components';
@@ -26,9 +27,25 @@ import {
 
 import './editor.scss';
 
+const HEIGHT_UNIT_OPTIONS = [
+	{ label: __( 'Pixels (px)', 'vidal-slider-block' ), value: 'px' },
+	{ label: __( 'Viewport height (vh)', 'vidal-slider-block' ), value: 'vh' },
+	{ label: __( 'Em (em)', 'vidal-slider-block' ), value: 'em' },
+];
+
 export default function Edit( { attributes, setAttributes, clientId } ) {
-	const { images, layout, interval, autoplay, showDots, showArrows } =
-		attributes;
+	const {
+		images,
+		layout,
+		interval,
+		autoplay,
+		showDots,
+		showArrows,
+		heightDesktop,
+		heightUnitDesktop,
+		heightMobile,
+		heightUnitMobile,
+	} = attributes;
 	const blockProps = useBlockProps();
 
 	function onSelectImages( newImages ) {
@@ -145,6 +162,61 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						checked={ showArrows }
 						onChange={ ( value ) =>
 							setAttributes( { showArrows: value } )
+						}
+					/>
+				</PanelBody>
+
+				<PanelBody
+					title={ __( 'Altura do Slider', 'vidal-slider-block' ) }
+					initialOpen={ false }
+				>
+					<TextControl
+						type="number"
+						label={ __( 'Altura mínima', 'vidal-slider-block' ) }
+						value={ heightDesktop }
+						min={ 0 }
+						onChange={ ( value ) =>
+							setAttributes( {
+								heightDesktop:
+									value === '' ? 0 : Number( value ),
+							} )
+						}
+					/>
+					<RadioControl
+						label={ __( 'Unidade', 'vidal-slider-block' ) }
+						selected={ heightUnitDesktop }
+						options={ HEIGHT_UNIT_OPTIONS }
+						onChange={ ( value ) =>
+							setAttributes( { heightUnitDesktop: value } )
+						}
+					/>
+				</PanelBody>
+
+				<PanelBody
+					title={ __(
+						'Altura do Slider (Mobile)',
+						'vidal-slider-block'
+					) }
+					initialOpen={ false }
+				>
+					<TextControl
+						type="number"
+						label={ __( 'Altura mínima', 'vidal-slider-block' ) }
+						value={ heightMobile }
+						min={ 0 }
+						onChange={ ( value ) =>
+							setAttributes( {
+								heightMobile:
+									value === '' ? 0 : Number( value ),
+							} )
+						}
+					/>
+					<RadioControl
+						label={ __( 'Unidade', 'vidal-slider-block' ) }
+						selected={ heightUnitMobile }
+						options={ HEIGHT_UNIT_OPTIONS }
+						onChange={ ( value ) =>
+							setAttributes( { heightUnitMobile: value } )
 						}
 					/>
 				</PanelBody>

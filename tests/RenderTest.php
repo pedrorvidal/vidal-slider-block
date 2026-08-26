@@ -437,4 +437,72 @@ class RenderTest extends WP_UnitTestCase
 		$this->assertStringContainsString('href="' . esc_url($same_domain_url) . '"', $output);
 		$this->assertStringNotContainsString('target="_blank"', $output);
 	}
+
+	public function test_default_height_variables_use_500px_desktop_and_250px_mobile()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-altura-1.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images' => [['id' => $attachment_id]],
+		]);
+
+		$this->assertStringContainsString('--vidal-slider-height:500px', $output);
+		$this->assertStringContainsString('--vidal-slider-height-mobile:250px', $output);
+	}
+
+	public function test_custom_height_and_unit_are_applied()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-altura-2.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images'            => [['id' => $attachment_id]],
+			'heightDesktop'     => 80,
+			'heightUnitDesktop' => 'vh',
+			'heightMobile'      => 30,
+			'heightUnitMobile'  => 'em',
+		]);
+
+		$this->assertStringContainsString('--vidal-slider-height:80vh', $output);
+		$this->assertStringContainsString('--vidal-slider-height-mobile:30em', $output);
+	}
+
+	public function test_invalid_height_unit_falls_back_to_px()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-altura-3.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images'            => [['id' => $attachment_id]],
+			'heightUnitDesktop' => 'algo-malicioso',
+		]);
+
+		$this->assertStringContainsString('--vidal-slider-height:500px', $output);
+	}
+
+	public function test_negative_height_is_clamped_to_zero()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-altura-4.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images'        => [['id' => $attachment_id]],
+			'heightDesktop' => -50,
+		]);
+
+		$this->assertStringContainsString('--vidal-slider-height:0px', $output);
+	}
 }

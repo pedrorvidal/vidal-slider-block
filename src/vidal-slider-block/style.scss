@@ -20,7 +20,7 @@
 .vidal-slider__slide {
 	flex: 0 0 100%;
 	max-width: 100%;
-	height: 400px;
+	height: var(--vidal-slider-height, 500px);
 
 	.vidal-slider__slide-link {
 		display: block;
@@ -35,10 +35,6 @@
 		object-position: center center;
 		display: block;
 	}
-}
-
-.vidal-slider--full .vidal-slider__slide {
-	max-height: 400px;
 }
 
 .vidal-slider__arrow {
@@ -110,13 +106,14 @@
 	}
 }
 
-// No mobile as imagens não precisam de 400px de altura, e o slider "boxed"
-// passa a se comportar como full width — sempre ocupando a tela toda,
-// independente do que foi escolhido no editor.
+// No mobile a altura do slider usa o valor configurado separadamente para
+// mobile (--vidal-slider-height-mobile), e o slider "boxed" passa a se
+// comportar como full width — sempre ocupando a tela toda, independente do
+// que foi escolhido no editor.
 @media (max-width: 600px) {
 
 	.vidal-slider__slide {
-		height: 250px;
+		height: var(--vidal-slider-height-mobile, 250px);
 	}
 
 	// Encadeamos as duas classes (o elemento sempre tem as duas, veja

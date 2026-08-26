@@ -16,6 +16,20 @@ $interval    = absint($attributes['interval'] ?? 3000);
 $show_dots   = (bool) ($attributes['showDots'] ?? true);
 $show_arrows = (bool) ($attributes['showArrows'] ?? true);
 
+$height_units = ['px', 'vh', 'em'];
+
+$height_desktop_raw = $attributes['heightDesktop'] ?? 500;
+$height_desktop      = is_numeric($height_desktop_raw) ? max(0, (float) $height_desktop_raw) : 500;
+$height_unit_desktop = in_array($attributes['heightUnitDesktop'] ?? 'px', $height_units, true)
+	? $attributes['heightUnitDesktop']
+	: 'px';
+
+$height_mobile_raw = $attributes['heightMobile'] ?? 250;
+$height_mobile      = is_numeric($height_mobile_raw) ? max(0, (float) $height_mobile_raw) : 250;
+$height_unit_mobile = in_array($attributes['heightUnitMobile'] ?? 'px', $height_units, true)
+	? $attributes['heightUnitMobile']
+	: 'px';
+
 // Os atributos do bloco vêm do post_content. O WordPress valida o TIPO
 // deles contra o block.json (WP_Block_Type::prepare_attributes_for_render()),
 // mas não a semântica — uma string continua "válida" mesmo sendo uma URL
@@ -79,9 +93,22 @@ if ('full' === $layout) {
 	$wrapper_classes .= ' alignfull';
 }
 
+// Custom properties (não escapadas aqui) porque get_block_wrapper_attributes()
+// já escapa o valor inteiro do atributo "style" via esc_attr() antes de
+// imprimir. $height_unit_* já é validado contra uma allowlist acima, então
+// não há risco de injeção via unidade.
+$wrapper_style = sprintf(
+	'--vidal-slider-height:%s%s;--vidal-slider-height-mobile:%s%s;',
+	$height_desktop,
+	$height_unit_desktop,
+	$height_mobile,
+	$height_unit_mobile
+);
+
 $wrapper_attributes = get_block_wrapper_attributes(
 	[
 		'class'              => $wrapper_classes,
+		'style'              => $wrapper_style,
 		'data-autoplay'      => $autoplay ? 'true' : 'false',
 		'data-interval'      => esc_attr($interval),
 	]
