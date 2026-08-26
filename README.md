@@ -1,230 +1,230 @@
 # 🎠 Vidal Slider Block
 
-Bloco nativo do Gutenberg para criar **sliders de imagens** no WordPress, sem shortcodes e sem plugins pesados de terceiros.
+Native Gutenberg block for creating **image sliders** in WordPress, with no shortcodes and no heavy third-party plugins.
 
-![Versão](https://img.shields.io/badge/vers%C3%A3o-0.1.0-blue)
-![Status](https://img.shields.io/badge/status-funcional-brightgreen)
-![Licença](https://img.shields.io/badge/licen%C3%A7a-GPL--2.0--or--later-green)
+![Version](https://img.shields.io/badge/version-0.1.0-blue)
+![Status](https://img.shields.io/badge/status-functional-brightgreen)
+![License](https://img.shields.io/badge/license-GPL--2.0--or--later-green)
 
-> ✅ Autoplay e navegação por bolinhas já funcionam no front-end. Este README vai evoluir junto com o plugin.
-
----
-
-## ✨ Funcionalidades
-
-- 🖼️ Seleção de múltiplas imagens direto da Biblioteca de Mídia do WordPress
-- 🔗 Link opcional por slide (relativo ou absoluto), com abertura em nova aba automática para links externos
-- 📐 Layout em largura do conteúdo (*boxed*) ou tela cheia (*full width*)
-- ▶️ Autoplay configurável (ligar/desligar), com pausa automática ao passar o mouse sobre o slider
-- ⏱️ Intervalo entre slides ajustável (1 a 10 segundos)
-- 🔘 Navegação por bolinhas (*dots*), opcional
-- ◀️▶️ Setas de navegação (anterior/próximo), opcionais — SVG inline, sem depender de nenhuma biblioteca externa
-- 📱 Responsivo: no mobile (≤600px), o slider sempre ocupa a tela toda (mesmo com layout *boxed*) e as imagens ficam com altura reduzida (250px)
-- ⚡ Bloco **dinâmico** — a marcação é gerada no servidor a cada carregamento da página
+> ✅ Autoplay and dot navigation already work on the front end. This README will evolve alongside the plugin.
 
 ---
 
-## ✅ Requisitos
+## ✨ Features
 
-| Requisito | Versão |
+- 🖼️ Select multiple images directly from the WordPress Media Library
+- 🔗 Optional link per slide (relative or absolute), with automatic new-tab opening for external links
+- 📐 Content-width layout (*boxed*) or full-width (*full width*)
+- ▶️ Configurable autoplay (on/off), with automatic pause on slider hover
+- ⏱️ Adjustable interval between slides (1 to 10 seconds)
+- 🔘 Dot navigation, optional
+- ◀️▶️ Navigation arrows (previous/next), optional — inline SVG, with no external library dependency
+- 📱 Responsive: on mobile (≤600px), the slider always takes up the full screen (even with *boxed* layout) and images get a reduced height (250px)
+- ⚡ **Dynamic** block — markup is generated server-side on every page load
+
+---
+
+## ✅ Requirements
+
+| Requirement | Version |
 |---|---|
-| 🐘 WordPress | 6.8 ou superior |
-| 🐘 PHP | 7.4 ou superior |
-| 🟢 Node.js | 18+ (recomendado, para compatibilidade com `@wordpress/scripts`) |
-| 📦 npm | instalado junto com o Node.js |
+| 🐘 WordPress | 6.8 or higher |
+| 🐘 PHP | 7.4 or higher |
+| 🟢 Node.js | 18+ (recommended, for compatibility with `@wordpress/scripts`) |
+| 📦 npm | installed together with Node.js |
 
 ---
 
-## 📦 Instalação (uso normal do plugin)
+## 📦 Installation (regular plugin usage)
 
-Use este caminho se você só quer **usar** o plugin em um site WordPress, sem mexer no código.
+Use this path if you just want to **use** the plugin on a WordPress site, without touching the code.
 
-1. Baixe uma versão já empacotada do plugin (zip) ou clone este repositório.
-2. Envie a pasta `vidal-slider-block` para `/wp-content/plugins/` do seu site.
-3. Ative o plugin em **Plugins** no painel do WordPress.
-4. No editor de blocos, adicione o bloco **Vidal Slider Block** (categoria "Widgets").
+1. Download an already-packaged version of the plugin (zip) or clone this repository.
+2. Upload the `vidal-slider-block` folder to `/wp-content/plugins/` on your site.
+3. Activate the plugin under **Plugins** in the WordPress admin.
+4. In the block editor, add the **Vidal Slider Block** block (category "Widgets").
 
-> ⚠️ Se você clonou o repositório diretamente (em vez de baixar um zip já empacotado), a pasta `build/` não existe ainda — o plugin **não vai funcionar** até você gerá-la. Siga a seção [🛠️ Desenvolvimento](#️-desenvolvimento) abaixo.
+> ⚠️ If you cloned the repository directly (instead of downloading an already-packaged zip), the `build/` folder doesn't exist yet — the plugin **won't work** until you generate it. Follow the [🛠️ Development](#️-development) section below.
 
 ---
 
-## 🛠️ Desenvolvimento
+## 🛠️ Development
 
-Use este caminho se você vai **editar o código** do bloco (JS, SCSS, PHP).
+Use this path if you're going to **edit the block's code** (JS, SCSS, PHP).
 
-### 1. Coloque o projeto no lugar certo
+### 1. Put the project in the right place
 
-Este plugin precisa rodar dentro de uma instalação real do WordPress. Clone (ou já tenha clonado) o repositório direto dentro de `wp-content/plugins/`:
+This plugin needs to run inside a real WordPress installation. Clone (or already have cloned) the repository directly into `wp-content/plugins/`:
 
 ```bash
-cd /caminho/do/seu/wordpress/wp-content/plugins/
+cd /path/to/your/wordpress/wp-content/plugins/
 git clone git@github.com:pedrorvidal/vidal-slider-block.git
 cd vidal-slider-block
 ```
 
-### 2. Instale as dependências
+### 2. Install the dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Compile os assets
+### 3. Compile the assets
 
 ```bash
-npm run start   # modo desenvolvimento, com watch (recompila a cada alteração)
+npm run start   # development mode, with watch (recompiles on every change)
 ```
 
-ou, para gerar uma build de produção (sem watch):
+or, to generate a production build (without watch):
 
 ```bash
 npm run build
 ```
 
-Qualquer um dos dois comandos gera/atualiza a pasta `build/`, que é o que o `vidal-slider-block.php` de fato registra e carrega no WordPress — **o plugin lê de `build/`, nunca direto de `src/`**.
+Either command generates/updates the `build/` folder, which is what `vidal-slider-block.php` actually registers and loads in WordPress — **the plugin reads from `build/`, never directly from `src/`**.
 
-### 4. Ative o plugin
+### 4. Activate the plugin
 
-Com a `build/` gerada, vá em **Plugins** no wp-admin e ative o **Vidal Slider Block** normalmente. Enquanto `npm run start` estiver rodando, qualquer alteração em `src/` recompila automaticamente — basta recarregar a página para ver o resultado.
+With `build/` generated, go to **Plugins** in wp-admin and activate **Vidal Slider Block** normally. While `npm run start` is running, any change to `src/` recompiles automatically — just reload the page to see the result.
 
-### 📜 Scripts disponíveis
+### 📜 Available scripts
 
-| Comando | O que faz |
+| Command | What it does |
 |---|---|
-| `npm run start` | Build de desenvolvimento com watch (recompila ao salvar) |
-| `npm run build` | Build de produção, otimizada, para `build/` |
-| `npm run format` | Formata o código automaticamente (`wp-scripts format`) |
-| `npm run lint:js` | Lint do JavaScript |
-| `npm run lint:css` | Lint do SCSS/CSS |
-| `npm run test:unit` | Testes JS (Jest) — ver seção [🧪 Testes](#-testes) |
-| `npm run plugin-zip` | Empacota o plugin em um `.zip` pronto pra distribuir |
+| `npm run start` | Development build with watch (recompiles on save) |
+| `npm run build` | Optimized production build, into `build/` |
+| `npm run format` | Automatically formats the code (`wp-scripts format`) |
+| `npm run lint:js` | Lints the JavaScript |
+| `npm run lint:css` | Lints the SCSS/CSS |
+| `npm run test:unit` | JS tests (Jest) — see the [🧪 Tests](#-tests) section |
+| `npm run plugin-zip` | Packages the plugin into a `.zip` ready for distribution |
 
-### 🗂️ Estrutura do projeto
+### 🗂️ Project structure
 
 ```
 vidal-slider-block/
-├── vidal-slider-block.php     # bootstrap do plugin, registra o bloco a partir de build/
+├── vidal-slider-block.php     # plugin bootstrap, registers the block from build/
 ├── src/
 │   └── vidal-slider-block/
-│       ├── block.json          # nome, atributos e wiring dos assets do bloco
-│       ├── index.js            # registra o bloco no editor
-│       ├── edit.js             # UI do bloco no editor (seleção de imagens, configurações)
-│       ├── slider-images.js    # lógica pura de imagens/links (sem UI), testada com Jest
-│       ├── save.js             # sempre retorna null — bloco é dinâmico
-│       ├── render.php          # markup do front-end, gerado no servidor
-│       ├── view.js             # script de front-end (autoplay, navegação)
-│       ├── style.scss          # estilos usados no editor e no front-end
-│       ├── editor.scss         # estilos usados só no editor
-│       └── test/               # testes Jest (ex.: slider-images.js)
-├── tests/                      # testes PHPUnit (render.php)
-└── build/                      # gerado por npm run start/build — não editar à mão
+│       ├── block.json          # name, attributes and asset wiring for the block
+│       ├── index.js            # registers the block in the editor
+│       ├── edit.js             # block UI in the editor (image selection, settings)
+│       ├── slider-images.js    # pure image/link logic (no UI), tested with Jest
+│       ├── save.js             # always returns null — the block is dynamic
+│       ├── render.php          # front-end markup, generated server-side
+│       ├── view.js             # front-end script (autoplay, navigation)
+│       ├── style.scss          # styles used in both the editor and the front end
+│       ├── editor.scss         # styles used only in the editor
+│       └── test/               # Jest tests (e.g. slider-images.js)
+├── tests/                      # PHPUnit tests (render.php)
+└── build/                      # generated by npm run start/build — do not edit by hand
 ```
 
 ---
 
-## 🧪 Testes
+## 🧪 Tests
 
-O bloco tem dois tipos de teste automatizado, um pra cada lado do código: **PHPUnit** pra tudo que roda no servidor (`render.php`) e **Jest** pra lógica pura do JavaScript do editor (`slider-images.js`).
+The block has two kinds of automated tests, one for each side of the code: **PHPUnit** for everything that runs on the server (`render.php`) and **Jest** for the editor's pure JavaScript logic (`slider-images.js`).
 
 ### JavaScript (Jest)
 
-`slider-images.js` concentra a lógica de estado do editor que não depende de UI — validação de link, merge de imagens preservando o link ao reabrir a seleção de mídia, checagem de link inválido. Ela foi separada do `edit.js` justamente pra poder ser testada sem precisar renderizar o bloco inteiro (o que exigiria simular o media picker do WordPress).
+`slider-images.js` holds the editor's state logic that doesn't depend on the UI — link validation, merging images while preserving the link when reopening the media selection, invalid-link checking. It was separated out from `edit.js` specifically so it could be tested without needing to render the whole block (which would require simulating WordPress's media picker).
 
-Roda direto no seu host, sem precisar do ddev — é só JavaScript puro:
+Runs directly on your host, no need for ddev — it's plain JavaScript:
 
 ```bash
 npm run test:unit
 ```
 
-Os testes ficam em `src/vidal-slider-block/test/*.js`.
+The tests live in `src/vidal-slider-block/test/*.js`.
 
 ### PHP (PHPUnit)
 
-Cobre a lógica de `render.php` — inclusive validações de segurança, como a resolução da URL da imagem sempre a partir do ID do anexo (nunca confiando em uma URL vinda junto com os atributos do bloco).
+Covers the logic in `render.php` — including security validations, such as always resolving the image URL from the attachment ID (never trusting a URL passed along with the block's attributes).
 
-> ⚠️ Ao contrário do Jest, os testes PHP só rodam dentro do ambiente [ddev](https://ddev.com/) deste projeto, porque dependem de uma instalação real do WordPress e de um banco de dados de teste. Não funcionam com PHP/Composer do seu host.
+> ⚠️ Unlike Jest, the PHP tests only run inside this project's [ddev](https://ddev.com/) environment, because they depend on a real WordPress installation and a test database. They don't work with your host's PHP/Composer.
 
-#### 1. Instale as dependências de teste
+#### 1. Install the test dependencies
 
 ```bash
 ddev exec "cd /var/www/html/web/wp-content/plugins/vidal-slider-block && composer install"
 ```
 
-#### 2. Crie o banco de dados de teste (só na primeira vez por ambiente)
+#### 2. Create the test database (only the first time per environment)
 
-Os testes usam um banco **separado** do banco do site (`db_test`), que é recriado do zero a cada execução:
+The tests use a database **separate** from the site's database (`db_test`), which is recreated from scratch on every run:
 
 ```bash
 ddev exec "mysql -h db -u root -proot -e \"CREATE DATABASE IF NOT EXISTS db_test; GRANT ALL PRIVILEGES ON db_test.* TO 'db'@'%'; FLUSH PRIVILEGES;\""
 ```
 
-#### 3. Rode os testes
+#### 3. Run the tests
 
 ```bash
 ddev exec "cd /var/www/html/web/wp-content/plugins/vidal-slider-block && composer test"
 ```
 
-Ou, se preferir uma sessão interativa dentro do container (evita repetir o `cd` a cada comando):
+Or, if you prefer an interactive session inside the container (avoids repeating `cd` on every command):
 
 ```bash
 ddev ssh -d /var/www/html/web/wp-content/plugins/vidal-slider-block
 composer test
 ```
 
-Os testes ficam em `tests/*Test.php`. Nomes de método sempre em inglês, mesmo com o restante do projeto em pt-BR.
+The tests live in `tests/*Test.php`. Method names are always in English, even though the rest of the project is in pt-BR.
 
 ---
 
-## 🚀 Como usar (wp-admin)
+## 🚀 How to use (wp-admin)
 
-1. No editor, clique em **Adicionar bloco** e procure por **"Vidal Slider Block"**.
-2. Clique em **Adicionar imagens** e selecione (ou envie) uma ou mais imagens na Biblioteca de Mídia.
-3. (Opcional) Em cada imagem, preencha o campo **Link** com uma URL relativa (`/pagina`) ou absoluta (`https://...`) — qualquer outro formato mostra erro e trava o botão de salvar até ser corrigido. Links para domínios diferentes do site (incluindo subdomínios) abrem automaticamente em nova aba.
-4. No painel lateral, em **Configurações do Slider**, ajuste:
+1. In the editor, click **Add block** and search for **"Vidal Slider Block"**.
+2. Click **Add images** and select (or upload) one or more images in the Media Library.
+3. (Optional) For each image, fill in the **Link** field with a relative (`/page`) or absolute (`https://...`) URL — any other format shows an error and blocks the save button until it's fixed. Links to domains other than the site's (including subdomains) automatically open in a new tab.
+4. In the sidebar, under **Slider Settings**, adjust:
 
-   | Opção | O que faz |
+   | Option | What it does |
    |---|---|
-   | 🖥️ **Full width** | Faz o slider ocupar toda a largura da tela |
-   | ▶️ **Autoplay** | Liga/desliga o avanço automático dos slides |
-   | ⏱️ **Intervalo entre slides** | Define, em segundos, o tempo entre uma troca e outra (com autoplay ativo) |
-   | 🔘 **Mostrar bolinhas de navegação** | Liga/desliga os *dots* abaixo do slider |
-   | ◀️▶️ **Mostrar setas de navegação** | Liga/desliga as setas de anterior/próximo sobre o slider |
+   | 🖥️ **Full width** | Makes the slider take up the entire screen width |
+   | ▶️ **Autoplay** | Turns automatic slide advancing on/off |
+   | ⏱️ **Interval between slides** | Sets, in seconds, the time between one transition and the next (with autoplay enabled) |
+   | 🔘 **Show navigation dots** | Turns the *dots* below the slider on/off |
+   | ◀️▶️ **Show navigation arrows** | Turns the previous/next arrows over the slider on/off |
 
-5. Para trocar as imagens depois, use **Editar imagens**; para remover uma imagem específica, passe o mouse sobre ela e clique em **Remover**.
-6. Publique ou atualize a página/post para ver o slider no front-end.
+5. To change the images later, use **Edit images**; to remove a specific image, hover over it and click **Remove**.
+6. Publish or update the page/post to see the slider on the front end.
 
 ---
 
-## ❓ Perguntas frequentes
+## ❓ Frequently asked questions
 
-**O slider funciona sem JavaScript no front-end?**
-A marcação (slides e bolinhas de navegação) é sempre renderizada no servidor, mas o comportamento interativo (autoplay, troca de slide e clique nas bolinhas) depende do script de front-end (`view.js`). Sem JavaScript, apenas o primeiro slide fica visível.
+**Does the slider work without JavaScript on the front end?**
+The markup (slides and navigation dots) is always rendered server-side, but the interactive behavior (autoplay, slide switching and clicking the dots) depends on the front-end script (`view.js`). Without JavaScript, only the first slide is visible.
 
-**Posso usar vídeos ou outros tipos de mídia?**
-Não, por enquanto o bloco aceita apenas imagens.
+**Can I use videos or other media types?**
+No, for now the block only accepts images.
 
-**Preciso rodar `npm run build` sempre que atualizar o plugin?**
-Só se você estiver trabalhando a partir do código-fonte (pasta `src/`). Se você baixou uma versão já empacotada/zipada do plugin, a pasta `build/` já vem pronta.
+**Do I need to run `npm run build` every time I update the plugin?**
+Only if you're working from the source code (`src/` folder). If you downloaded an already-packaged/zipped version of the plugin, the `build/` folder is already provided.
 
 ---
 
 ## 🗺️ Changelog
 
 ### 0.1.0
-- 🎉 Versão inicial: seleção de imagens, configurações de layout/autoplay/intervalo e renderização dinâmica no front-end.
-- ▶️ Implementado o comportamento do slider no front-end (`view.js`): troca de slides, autoplay com pausa no hover e navegação por bolinhas.
-- 🎨 Adicionados os estilos (`style.scss`) para trilha, slides e bolinhas de navegação (`.vidal-slider__*`).
-- 🔗 Adicionado link opcional por slide, com validação (relativo `/algo` ou absoluto `http(s)://`) no editor e revalidado no servidor. O `target` não é escolhido pelo usuário: é sempre derivado comparando o domínio do link com o do site — link externo (incluindo subdomínio) abre em nova aba automaticamente, com `rel="noopener noreferrer"`.
-- 🔘◀️▶️ Bolinhas de navegação agora são opcionais (`showDots`), e adicionadas setas de navegação (`showArrows`), também opcionais — SVG inline com efeito de vidro fosco (`backdrop-filter` + `filter: drop-shadow`), sem depender de nenhuma biblioteca externa.
-- 📱 Adicionado breakpoint mobile (`≤600px`): altura das imagens reduzida para 250px, e o layout *boxed* passa a se comportar como full width (sangria de tela toda), já que 400px e a largura do conteúdo fazem menos sentido numa tela pequena.
-- ✅ Adicionados testes Jest (`npm run test:unit`) para a lógica de imagens/links do editor, extraída para `slider-images.js` justamente para ser testável sem precisar renderizar o bloco inteiro.
-- 🐛 Corrigido o layout *full width*: o breakout manual (`100vw`/margens negativas) quebrava em temas de bloco (FSE), que forçam margens automáticas em qualquer filho sem a classe `alignfull` do core. Agora `render.php` adiciona `alignfull` quando `layout` é `"full"`, deixando o próprio tema resolver o breakout corretamente.
+- 🎉 Initial version: image selection, layout/autoplay/interval settings and dynamic rendering on the front end.
+- ▶️ Implemented the slider's front-end behavior (`view.js`): slide switching, autoplay with pause on hover and dot navigation.
+- 🎨 Added the styles (`style.scss`) for the track, slides and navigation dots (`.vidal-slider__*`).
+- 🔗 Added an optional link per slide, with validation (relative `/something` or absolute `http(s)://`) in the editor and revalidated on the server. The `target` isn't chosen by the user: it's always derived by comparing the link's domain with the site's — an external link (including subdomains) automatically opens in a new tab, with `rel="noopener noreferrer"`.
+- 🔘◀️▶️ Navigation dots are now optional (`showDots`), and navigation arrows were added (`showArrows`), also optional — inline SVG with a frosted-glass effect (`backdrop-filter` + `filter: drop-shadow`), with no external library dependency.
+- 📱 Added a mobile breakpoint (`≤600px`): image height reduced to 250px, and the *boxed* layout now behaves like full width (full-screen bleed), since 400px and content width make less sense on a small screen.
+- ✅ Added Jest tests (`npm run test:unit`) for the editor's image/link logic, extracted into `slider-images.js` specifically so it could be tested without needing to render the whole block.
+- 🐛 Fixed the *full width* layout: the manual breakout (`100vw`/negative margins) broke in block themes (FSE), which force automatic margins on any child without the core's `alignfull` class. Now `render.php` adds `alignfull` when `layout` is `"full"`, letting the theme itself resolve the breakout correctly.
 
 ---
 
-## 📄 Licença
+## 📄 License
 
 [GPL-2.0-or-later](https://www.gnu.org/licenses/gpl-2.0.html)
 
 ---
 
-Feito com 💙 por [Pedro Vidal](https://github.com/pedrorvidal)
+Made with 💙 by [Pedro Vidal](https://github.com/pedrorvidal)
