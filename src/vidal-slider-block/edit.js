@@ -172,7 +172,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 				>
 					<TextControl
 						type="number"
-						label={ __( 'Altura mínima', 'vidal-slider-block' ) }
+						label={ __( 'Altura', 'vidal-slider-block' ) }
 						value={ heightDesktop }
 						min={ 0 }
 						onChange={ ( value ) =>
@@ -201,7 +201,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 				>
 					<TextControl
 						type="number"
-						label={ __( 'Altura mínima', 'vidal-slider-block' ) }
+						label={ __( 'Altura', 'vidal-slider-block' ) }
 						value={ heightMobile }
 						min={ 0 }
 						onChange={ ( value ) =>
@@ -287,7 +287,10 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 											'Link (opcional)',
 											'vidal-slider-block'
 										) }
-										placeholder="/pagina ou https://..."
+										placeholder={ __(
+											'/pagina ou https://…',
+											'vidal-slider-block'
+										) }
 										value={ linkUrl }
 										className={
 											isInvalid
