@@ -2,11 +2,9 @@
 
 Native Gutenberg block for creating **image sliders** in WordPress, with no shortcodes and no heavy third-party plugins.
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue)
-![Status](https://img.shields.io/badge/status-functional-brightgreen)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Status](https://img.shields.io/badge/status-stable-brightgreen)
 ![License](https://img.shields.io/badge/license-GPL--2.0--or--later-green)
-
-> ✅ Autoplay and dot navigation already work on the front end. This README will evolve alongside the plugin.
 
 ---
 
@@ -211,6 +209,14 @@ Only if you're working from the source code (`src/` folder). If you downloaded a
 ---
 
 ## 🗺️ Changelog
+
+### 1.0.0
+- 📏 Added configurable slider height, set independently for desktop (default `500px`) and mobile (default `250px`), each with a unit of px, vh or em.
+- 🐛 Autoplay is now disabled when the slider has only one slide, matching the behavior `view.js` already had — the wrapper's markup no longer claims `data-autoplay="true"` when there's nothing to advance to.
+- 🌍 Full i18n pass: wrapped the one remaining untranslated string (the link field's placeholder), and added `load_plugin_textdomain()` so PHP-side translations actually load at runtime (this plugin isn't hosted on WordPress.org, so that isn't automatic).
+- 🧹 Cleaned up leftover `@wordpress/create-block` scaffold defaults: real block icon and description in `block.json` (were still the tool's placeholders), and removed the scaffold's debug border from `editor.scss`.
+- 📄 Added the missing `LICENSE` file (GPL-2.0-or-later, matching what the plugin header and this README already declared).
+- 🇺🇸 Translated this README to English.
 
 ### 0.1.0
 - 🎉 Initial version: image selection, layout/autoplay/interval settings and dynamic rendering on the front end.
