@@ -5,8 +5,8 @@
 	"version": "0.1.0",
 	"title": "Vidal Slider Block",
 	"category": "widgets",
-	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool for Custom Vidal Slider Block project.",
+	"icon": "images-alt2",
+	"description": "Native Gutenberg block for creating image sliders, with autoplay, dot/arrow navigation and per-slide links.",
 	"example": {},
 	"attributes": {
 		"images": {
