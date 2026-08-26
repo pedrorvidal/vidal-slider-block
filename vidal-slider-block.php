@@ -13,7 +13,6 @@
  *
  * @package CreateBlock
  */
-/**TODO: Se tiver apenas 1 slide, desliga a animação e o loop (verificar)  */
 
 if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.

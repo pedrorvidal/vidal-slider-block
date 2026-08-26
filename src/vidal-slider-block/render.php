@@ -84,6 +84,15 @@ if (empty($slides)) {
 	return;
 }
 
+// Com um único slide não há para onde avançar, então o autoplay é
+// desligado independente do que foi configurado no editor — a marcação
+// reflete o comportamento real (view.js também já ignora sliders de um
+// slide só, mas o atributo não deveria dizer "true" quando não há nada
+// pra animar).
+if (count($slides) <= 1) {
+	$autoplay = false;
+}
+
 $wrapper_classes = 'vidal-slider vidal-slider--' . esc_attr($layout);
 
 // A tema (FSE) restringe a largura de qualquer bloco filho de um grupo

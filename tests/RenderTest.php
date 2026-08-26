@@ -505,4 +505,41 @@ class RenderTest extends WP_UnitTestCase
 
 		$this->assertStringContainsString('--vidal-slider-height:0px', $output);
 	}
+
+	public function test_autoplay_is_disabled_with_a_single_image_even_when_enabled()
+	{
+		$attachment_id = self::factory()->attachment->create_object([
+			'file'           => 'imagem-autoplay-1.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images'   => [['id' => $attachment_id]],
+			'autoplay' => true,
+		]);
+
+		$this->assertStringContainsString('data-autoplay="false"', $output);
+	}
+
+	public function test_autoplay_is_kept_with_multiple_images_when_enabled()
+	{
+		$id_1 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-autoplay-2.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+		$id_2 = self::factory()->attachment->create_object([
+			'file'           => 'imagem-autoplay-3.jpg',
+			'post_parent'    => 0,
+			'post_mime_type' => 'image/jpeg',
+		]);
+
+		$output = $this->render_slider([
+			'images'   => [['id' => $id_1], ['id' => $id_2]],
+			'autoplay' => true,
+		]);
+
+		$this->assertStringContainsString('data-autoplay="true"', $output);
+	}
 }
