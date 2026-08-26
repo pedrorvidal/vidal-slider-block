@@ -19,6 +19,7 @@ Bloco nativo do Gutenberg para criar **sliders de imagens** no WordPress, sem sh
 - ⏱️ Intervalo entre slides ajustável (1 a 10 segundos)
 - 🔘 Navegação por bolinhas (*dots*), opcional
 - ◀️▶️ Setas de navegação (anterior/próximo), opcionais — SVG inline, sem depender de nenhuma biblioteca externa
+- 📱 Responsivo: no mobile (≤600px), o slider sempre ocupa a tela toda (mesmo com layout *boxed*) e as imagens ficam com altura reduzida (250px)
 - ⚡ Bloco **dinâmico** — a marcação é gerada no servidor a cada carregamento da página
 
 ---
@@ -214,6 +215,7 @@ Só se você estiver trabalhando a partir do código-fonte (pasta `src/`). Se vo
 - 🎨 Adicionados os estilos (`style.scss`) para trilha, slides e bolinhas de navegação (`.vidal-slider__*`).
 - 🔗 Adicionado link opcional por slide, com validação (relativo `/algo` ou absoluto `http(s)://`) no editor e revalidado no servidor. O `target` não é escolhido pelo usuário: é sempre derivado comparando o domínio do link com o do site — link externo (incluindo subdomínio) abre em nova aba automaticamente, com `rel="noopener noreferrer"`.
 - 🔘◀️▶️ Bolinhas de navegação agora são opcionais (`showDots`), e adicionadas setas de navegação (`showArrows`), também opcionais — SVG inline com efeito de vidro fosco (`backdrop-filter` + `filter: drop-shadow`), sem depender de nenhuma biblioteca externa.
+- 📱 Adicionado breakpoint mobile (`≤600px`): altura das imagens reduzida para 250px, e o layout *boxed* passa a se comportar como full width (sangria de tela toda), já que 400px e a largura do conteúdo fazem menos sentido numa tela pequena.
 - ✅ Adicionados testes Jest (`npm run test:unit`) para a lógica de imagens/links do editor, extraída para `slider-images.js` justamente para ser testável sem precisar renderizar o bloco inteiro.
 - 🐛 Corrigido o layout *full width*: o breakout manual (`100vw`/margens negativas) quebrava em temas de bloco (FSE), que forçam margens automáticas em qualquer filho sem a classe `alignfull` do core. Agora `render.php` adiciona `alignfull` quando `layout` é `"full"`, deixando o próprio tema resolver o breakout corretamente.
 

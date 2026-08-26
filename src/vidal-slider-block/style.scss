@@ -109,3 +109,28 @@
 		background-color: #fff;
 	}
 }
+
+// No mobile as imagens não precisam de 400px de altura, e o slider "boxed"
+// passa a se comportar como full width — sempre ocupando a tela toda,
+// independente do que foi escolhido no editor.
+@media (max-width: 600px) {
+
+	.vidal-slider__slide {
+		height: 250px;
+	}
+
+	// Encadeamos as duas classes (o elemento sempre tem as duas, veja
+	// render.php) para garantir especificidade (0,2,0) — maior que a regra
+	// do tema (.is-layout-constrained > :where(...), que vale (0,1,0) já
+	// que :where() nunca soma especificidade). Sem isso, ambas as regras
+	// empatam em especificidade E em !important, e quem decide o empate é
+	// a ordem de carregamento no <head> — o tema carrega depois da nossa
+	// stylesheet, então venceria por sorte, não por design.
+	.vidal-slider.vidal-slider--boxed {
+		width: 100vw;
+		max-width: 100vw;
+		position: relative;
+		left: 50%;
+		margin-left: -50vw !important;
+	}
+}
